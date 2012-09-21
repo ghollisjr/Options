@@ -1,2 +1,4 @@
 demo
 .emacs_backups/*
+*.o
+*.so
