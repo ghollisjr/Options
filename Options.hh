@@ -131,7 +131,7 @@ void parseargs(int argc, char** argv,
     int tmp = options.options[optchar].argspec;
     if(tmp != no_argument) {
       Flag tmpflag = currentflag;
-      tmpflag.arg = optarg;
+      tmpflag.arg = optarg == 0 ? "" : optarg;
       flags.flags.insert(std::make_pair(optchar,tmpflag));
     }
     else
