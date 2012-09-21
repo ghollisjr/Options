@@ -101,9 +101,9 @@ public:
   std::string GetErrorString() {return e;}
 };
 
-void parseargs(int argc, char** argv,
-	       OptionSpec& options, Flags& flags,
-	       std::vector<std::string>& args)
+inline void parseargs(int argc, char** argv,
+		      OptionSpec& options, Flags& flags,
+		      std::vector<std::string>& args)
 {
   char optchar = 0;
   const int numopts = options.size();
