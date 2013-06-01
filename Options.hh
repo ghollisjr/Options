@@ -18,6 +18,8 @@ struct Flag {
   std::string longopt;
   std::string arg;
   ARGSPEC argspec;
+  std::string helpdescription; //to be used in making a printable help
+			       //message
 };
 
 class Flags {
@@ -63,9 +65,12 @@ public:
   typedef std::map<char,Flag>::iterator optionspeciter;
   
   //add a flag with shortopt c and longopt s
-  void AddOption(char c,const std::string& s,ARGSPEC argspec)
+  void AddOption(char c,
+		 const std::string& s,
+		 ARGSPEC argspec,
+		 const std::string& helpdesc = "")
   {
-    Flag tmp = {c,s,"",argspec};
+    Flag tmp = {c,s,"",argspec,helpdesc};
     options[c]=tmp;
   }
   
@@ -87,6 +92,32 @@ public:
   }
 
   int size() {return options.size();}
+
+  //Return option description string, useful for making a help message
+  std::string GetOptionDesc(int spacing = 2)
+  {
+    using namespace std;
+    int maxsize=0;
+    for(optionspeciter i = options.begin();
+	i != options.end();
+	++i) {
+      maxsize = (maxsize < i->second.longopt.size()) ?
+	i->second.longopt.size() :
+	maxsize;
+    }
+    stringstream ss;
+    ss << "Options:";
+    for(optionspeciter i = options.begin();
+	i != options.end();
+	++i) {
+      ss << endl;
+      ss << '-' << i->second.shortopt << ",--" << i->second.longopt << ':';
+      int numspaces=maxsize - i->second.longopt.size()+spacing;
+      for(int j = 0; j < numspaces; ++j) ss << ' ';
+      ss << i->second.helpdescription;
+    }
+    return ss.str();
+  }
 
   friend void parseargs(int argc, char** argv,
 			OptionSpec& options, Flags& flags,

@@ -35,13 +35,13 @@ int main(int argc, char** argv)
   //the integer for whether it takes an argument:
 
   //Add an input file name flag which requires an argument:
-  options.AddOption('i',"inputfile",required_argument);
+  options.AddOption('i',"inputfile",required_argument,"select input file");
 
   //Add a help flag which needs no argument:
-  options.AddOption('h',"help",no_argument);
+  options.AddOption('h',"help",no_argument,"show this help message");
 
   //Add a miscellaneous flag which has an optional argument:
-  options.AddOption('m',"misc",optional_argument);
+  options.AddOption('m',"misc",optional_argument,"miscellaneous option");
   //note that per the GNU extension, the argument must be given like
   //-mMYARGUMENT; if it is given like -m MYARGUMENT it will be ignored
   //and sent to the leftover arguments.
@@ -57,7 +57,9 @@ int main(int argc, char** argv)
 
   //Did the user ask us for help?
   if(flags.Check('h')) {
-    std::cerr << "Usage: ..." << std::endl;
+    std::cerr << "Usage: demo [options]" << std::endl << std::endl;
+    //using convenient usage generator:
+    std::cerr << options.GetOptionDesc() << std::endl;
     return 1;
   }
 
